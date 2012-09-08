@@ -1,3 +1,3 @@
 # Sani
 
-A Blogging framework for Simplistic Perfectionists.
+Less Code. More Blogging.

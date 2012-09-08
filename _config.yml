@@ -4,7 +4,7 @@
 
 url: http://yoursite.com
 title: My Sani Blog
-subtitle: A blogging framework for Simplistic perfectionists.
+subtitle: Less Code. More Blogging.
 author: Your Name
 simple_search: http://google.com/search
 description:
@@ -12,7 +12,6 @@ description:
 auto: true
 server: true
 permalink: none
-baseurl: ""
 exclude:
 - .gitignore
 - README.md
@@ -20,13 +19,13 @@ exclude:
 prose:
   rooturl: "_posts"
   metadata: 
-    _posts/articles: |
+    _posts/blog: |
       published: false
-      layout: article
+      layout: post
       title: Your Post Title
-      abstract: Short summary of your article.
-      author_twitter: johndoe
-      author: John Doe
+      abstract: Short summary of your post.
+      author_twitter: 
+      author: 
       categories:
       - articles
 
@@ -42,7 +41,7 @@ email:
 
 # If publishing to a subdirectory as in http://site.com/project set 'root: /project'
 root: 
-permalink: /articles/:title/
+permalink: /blog/:title/
 code_dir: downloads/code
 category_dir: blog/categories
 markdown: rdiscount
