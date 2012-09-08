@@ -1,0 +1,430 @@
+/*
+The styles in this stylesheet only apply to resolutions 768px and up
+
+CALCULATING DIMENSIONS:
+----------------------
+The layout is fluid. The sote wrapper (.col-full) has a fixed pixel max-width.
+All subsequent dimensions are calculated based on that fixed pixel width, using the formula: target / context = result
+Credit - http://www.alistapart.com/articles/fluidgrids/
+
+-----
+INDEX
+-----
+
+1. Top Navigation
+2. Main navigation dropdown menus
+3. Containers & Columns
+4. Footer widgets
+3. Containers & Columns
+4. Featured Slider
+5. Homepage Sections
+6. Portfolio
+7. Footer Widgets
+8. Misc
+
+*/
+
+
+/*----------------------*/
+
+@import url(mixins.less);
+
+/*----------------------*/
+
+/* Adding padding to left & right of content columns */
+#top, #header, #content, #intro, #footer-widgets, #footer  { padding-left: 20px; padding-right: 20px; }
+
+@media only screen and (max-width: 767px)  {
+	.flex-direction-nav  { display: none; }
+}
+
+/* Adjust header elements positioning between 768px & 920px */
+@media only screen and (min-width: 768px) and (max-width: 920px) {
+	#logo, hgroup  { float: none!important; }
+	#navigation  { float: none!important; clear: both; margin: 1.5em 0 0 -10px!important; }
+	#header .search_main  { float: none; position: absolute; top: 0; right: 0; }
+}
+
+/* Move normal width slider navigation elements for high resolutions */
+@media only screen and (min-width: 1024px) {
+	.featured-wrap .controls-container  { 
+		ul.flex-direction-nav  {
+			top: 44%;
+			.prev  {
+				left: -24px;
+			}
+			.next  {
+				right: -24px;
+			}
+		}
+	}
+}
+
+@media only screen and (min-width: 940px) {
+	#content .portfolio-item  { margin: 1em 1.3% 1em!important; }
+}
+
+/* Only apply to iPad portrait and up */
+@media only screen and (min-width: 768px) {
+	
+	/* 1. TOP NAVIGATION */
+	#top {
+		background: @bg_dark;
+		position: relative;
+		z-index: 9999;
+		#top-nav { display: block; }
+		.nav {
+			a {
+				color: @bg_light; 
+				padding:6px 10px; 
+				line-height: 1.4; 
+				text-decoration:none;
+				font-size: 0.95em;
+				text-shadow:none;
+				&:hover { background: lighten(@bg_dark,10%); }
+			}
+			li {
+				&:hover {
+					> a {
+						background: lighten(@bg_dark,10%); color: #fff;
+						&:after  { border-color: #fff transparent transparent transparent!important; }
+					}
+				}
+				position: relative;
+				&.parent {
+					> a {
+						padding-right: 20px;
+						&:after {
+							top: 42%;
+							border-color: lighten(@bg_dark,50%) transparent transparent transparent;
+						}
+					}
+				}
+				&.current_page_item, &.current_page_parent, &.current-menu-ancestor, &.current-cat, &.li.current-menu-item {
+					a { background: lighten(@bg_dark,10%); }
+				}
+				ul {
+					background: lighten(@bg_dark,10%); 
+					margin:0; 
+					padding:0px; 
+					width: 180px; 
+					border: none; 
+					z-index:999;
+					.box_shadow(0,2px,2px,0,rgba(0,0,0,0.1));
+					.border_radius_bottom(4px);
+					position: absolute;
+					&:last-child {
+						a { .border_radius_bottom(4px); }
+					} 
+					li {
+						background: lighten(@bg_dark,10%);
+						a {
+							padding:4px 10px; 
+							width:160px; 
+							color: lighten(@color_body, 50%); 
+							background:lighten(@bg_dark,10%)!important; 
+							font-size:0.9em;
+							&:hover { background: lighten(@bg_dark,15%)!important }
+						}
+						&:last-child { .border_radius_bottom(4px); }
+						&.parent {
+							> a {
+								width: 150px;
+								&:after {
+									top: 39%;
+									border-color:transparent transparent transparent lighten(@bg_dark,50%)!important;
+								}
+								&:hover:after  {
+									border-color:transparent transparent transparent #fff;	
+								}
+							}
+						}
+						ul { margin: -23px 0 0 180px; }
+					}
+				}
+			}
+		}
+	}
+	
+	/* 2. MAIN NAVIGATION DROPDOWN MENUS */
+	h3.nav-toggle { display: none; }
+	#navigation  {
+		float: left;
+		display: block!important;
+		margin-top: -3px;
+		ul.rss  { margin-left: 10px; }
+		.nav li {
+			a  { .border_radius(3px); }
+			&.parent {
+				> a { 
+					position: relative;
+					padding-right:1.8em; 
+					&:after {
+						content: "";
+						display: block;
+						border:.3em solid @color_links;
+						border-color:@color_links transparent transparent transparent;
+						position: absolute;
+						top:40%;
+						right:.8751em;
+					}
+				}
+			}
+			&:hover {
+				> a {
+					background: @color_links; color: #fff;
+					&:after  { border-color: #fff transparent transparent transparent!important; }
+				}
+			}
+			
+	   		ul {
+	   			background: @color_links;
+	   			.border_radius(3px); 
+	   			margin: -3px 0 0 0px; 
+	   			padding: 10px 15px; 
+	   			position: absolute; 
+	   			width: 180px; 
+	   			border: none;
+	   			z-index:999;
+	   		 	li {
+	   		 		a {
+	   		 			padding: 6px 0px; 
+	   		 			width: 180px; 
+	   		 			background: none; 
+	   		 			font-size:0.8em;
+	   		 			line-height: 1em;
+	   		 			color: #fff;
+	   		 			border: none;
+	   		 			&:hover {
+	   		 				text-decoration: underline; background: none;
+	   		 			}
+	   		 		}
+	   		 		&.parent {
+						a {
+							padding-right: 0;
+							&:after {
+								border-color:transparent transparent transparent #fff !important;
+								right:0;
+								top:46%;
+							}
+						}
+					}
+	   		 		&.current_page_item, &.current_page_parent, &.current-menu-ancestor, &.current-cat, &.li.current-menu-item {
+	   		 			a { background: none; text-decoration: underline; }
+	   		 		}
+	   		 	}
+	   		 	ul { margin: -33px 0 0 180px; }
+	   		 }
+		}
+	}
+	
+	/* 2.1 GENERAL DROPDOWN MENUS */
+	.nav li ul  { position: absolute; visibility: hidden; .opacity(0); .transition(); overflow: hidden; }
+	
+	.nav li:hover ul ul,
+	.nav li:hover ul ul ul,
+	.nav li:hover ul ul ul ul { .opacity(0); visibility: hidden; overflow: hidden; }
+	.nav li:hover ul,
+	.nav li li:hover ul,
+	.nav li li li:hover ul,
+	.nav li li li li:hover ul  { .opacity(1); visibility: visible; overflow: visible; }
+	
+	/* 3. CONTAINERS & COLUMNS */
+	#header  {
+		.col-full  { position: relative; }
+		#logo, hgroup  { float: left; margin: 0 3em 0 0; }
+		hgroup  { margin-top: -6px; }
+		.search_main  {
+			float: right; width: 170px; margin-top: -2px;
+		}
+	}
+	#main.fullwidth, .layout-full #main, .col-full { max-width:960px; margin:0 auto; width:100% }
+	#main { width: 73.95%; /* 710 / 960 = 0.7395 */ }
+	#sidebar { margin-top: 0; width:21.88%; /* 210 / 960 = 0.2188 */ } 
+	.entry img { max-width:100%; }
+	.layout-full .entry img { max-width:100%; }
+	.layout-right-content {
+		#main  { float: right; }
+		#sidebar  { float: left; }
+	}
+	.layout-full #main  { width: 100%; }
+	.col-left { float: left; }
+	.col-right { float: right; }
+	
+	/* 4. FEATURED SLIDER */
+	#featured  article  header  { position: absolute; bottom: 20px; left: 45px; width: 50%; }
+	.controls-container  {	
+		.flex-control-nav  { top: auto; bottom: 30px; }
+		.flex-direction-nav  { display: block; top: auto; bottom: 20px; left: 0; }
+	}
+	.featured-wrap  {
+		&.carousel  {
+			#featured  {
+				overflow: visible!important;
+				.slides li  {
+				    article  { display: none; }
+				    &.current-slide  {
+				    	article  { display: block; }
+				    }
+				}
+			}
+			&.faded  {
+				#featured  {
+					.slides li  {
+						&.current-slide  { .opacity(1) !important; }
+					}
+				}
+			}
+		}
+		#featured  {
+			
+		}
+		.controls-container  {
+		    .flex-control-nav  { bottom: 50px; right: 30px; }
+		    .flex-direction-nav  { top: 20px; bottom: auto; }
+		}
+	}
+	
+	/* 5. HOMEPAGE SECTIONS */
+	.home-section  {
+		header  { float: left; margin-right: 4.16%; width: 21.88%; }
+		ul  {
+			float: left;
+			width: 73.96%;
+			li  {
+				float: left;
+				margin-right: 5.63%;
+				width: 29.58%;
+			}
+		}
+		&#portfolio  {
+			.portfolio-item {
+				width: 100%;
+				margin: 0!important;
+			}
+		}
+	}
+	
+	/* 6. PORTFOLIO */
+	#portfolio-gallery  {
+		h1  {
+			strong  { float: left; }
+			#port-tags  { float: left; margin: -4px 0 0 0; }
+		}
+		.port-fix-2col  { display: none; }
+	}
+	#content .portfolio-item {
+		margin: 1em 10% 1em;
+	}
+	.single-portfolio {
+		.portfolio  { float: left; width:21.88%; /* 210 / 960 = 0.2188 */ }
+		.single-portfolio-gallery  { float: right; width: 73.95%; /* 710 / 960 = 0.7395 */ } 
+	}
+	
+	/* 7. FOOTER WIDGETS */
+	#footer-widgets {
+		.block { margin-right:2.08%; /* 20 / 960 = 0.0208 */ float: left; }
+		&.col-1 {
+			.block { width: 100%; float: none; }
+			.footer-widget-1 { margin-right:0; }
+		}
+		&.col-2 {
+			.block { width: 48.96%; /* 470 / 960 = 0.4896 */ }
+			.footer-widget-2 { margin-right:0; }
+		}
+		&.col-3 {
+			.block { width: 31.86%; /* 306 / 960 = 0.3186 */ }
+			.footer-widget-3 { margin-right:0; }
+		}
+		&.col-4 {
+			.block { width: 23.44%; /* 225 / 960 = 0.2344 */ }
+			.footer-widget-4 { margin-right:0; }
+		}
+	}
+	
+	/* 8. MISC */
+	/* Footer Nav */
+	#footer  {
+		.nav  {
+			margin: 0;
+			li  { float: left; }
+			a  {
+				background: none; padding: 0 0 0 8px; color: #fff;
+				&:hover  { text-decoration: underline; }
+			}
+		}
+	}
+	
+		
+	/* Archive Header */
+	.archive_header {
+		.cat  { float: left; }
+		.catrss {
+			float: right;
+			display: inline;
+		}
+	}
+	
+	/* Post */
+	.post, .search-results .features, .search-results .page, .search-results .type-product, .search-results .type-portfolio  {
+		img.thumbnail  { margin-bottom: 2em; }
+		.post-meta {
+			margin:0 0 1.5em 0;
+			float: left;
+			width: 19.01%;  /* 135 / 710 = 0.1901 */
+			li  {
+				display: block;
+				margin: 0 0 3px;
+				padding: 5px 25px 5px 0;
+				line-height: 1;
+				text-align: right;
+				&.post-date  { background: url(../images/ico-date.png) no-repeat right center; }
+				&.post-author  { background: url(../images/ico-author.png) no-repeat right center; }
+				&.post-comments  { background: url(../images/ico-comments.png) no-repeat right center; }
+			}
+		}
+		.post-body  { float: right; width: 76.06%; } /* 0.7606 */
+	}
+	
+	/* Subcribe & Connect */
+	#connect { 
+		margin:0 0 1.5em; 
+		padding: 15px 0;
+		.newsletter-form {
+			&.fl  { float: left; }
+		}
+		.related-posts {
+			margin: 0;
+			border-top: 0;
+			border-left:1px solid @border_main;
+			padding: 0 0 0 15px;
+		}
+		.social  {
+			&.fr  { float: right; }
+		}
+	}
+	#main #connect {
+		.col-left, .col-right { width:48%; }
+	}
+	
+	/* Archives & Sitemap */
+	.page-template-template-archives-php .entry, .page-template-template-sitemap-php .entry  {
+		.fl  { float: left; width: 50%; }
+		.fr  { float: right; width: 50%; }
+	}
+	
+	/* Contact page template */
+	.page-template-template-contact-php {
+		.location-twitter  {
+			.col-left  { float: left; }
+			#office-location { 
+			    width: 48%; margin: 0;
+			}
+			.contact-social  {
+			    float: right; width: 48%;
+			    #twitter  { margin: 0; } 
+			}
+		}
+	}
+
+}

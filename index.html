@@ -1,0 +1,36 @@
+---
+layout: default
+class: home
+---
+
+{% assign index = true %}
+
+	<article id="about">
+		<h2>About</h2>
+
+		<p>Hi, my name is Gaurav Koley and I am a all-time-hungry-for-code geek. I love technology. I believe in standards. I believe in doing things the right way.</p>
+		
+		<p>I like to think I am a good blogger,developer,creative writer, musician and a not so good designer. I still delude myself into believing we should strive for some semblance of privacy on the web.</p>
+		<p>I love to learn, about anything. I am obviously starved for content.</p>
+	</article>
+
+	<article id="contact">
+		<h2>Contact</h2>
+
+		<p>Have something to say you would like me to hear? Drop me a line at any one of the following(or anywhere else you see me):</p>
+
+		<ul>
+			<li><a href="http://twitter.com/arkokoley">Twitter</a></li>
+			<li><a href="http://github.com/arkokoley">GitHub</a></li>
+			<li><a href="http://www.linkedin.com/in/arkokoley">LinkedIn</a></li>
+			<li><a href="http://www.flickr.com/photos/arkokoley/">Flickr</a></li>
+		</ul>
+	</article>
+    
+    {% for post in site.posts limit: site.recent_posts %}
+	{% assign content = post.content %}
+	<article id="latest-post">
+		<h2>Latest Post</h2>
+		{% include article.html %}
+	</article>
+{% endfor %}

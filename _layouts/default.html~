@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en-US">
+<head>
+
+<meta charset="UTF-8" />
+
+<title>{{ page.title }}</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="robots" content="index, follow" />
+<link rel="stylesheet" type="text/css" href="css/style.css" media="screen" />
+<link rel='stylesheet' id='woo-layout-css'  href='css/layout.css' type='text/css' media='all' />
+<link rel='stylesheet' id='prettyPhoto-css'  href='css/prettyPhoto.css' type='text/css' media='all' />
+
+<!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame -->
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<!--  Mobile viewport scale | Disable user zooming as the layout is optimised -->
+<meta content="initial-scale=1.0" name="viewport"/>
+
+<!-- Google Webfonts -->
+<link href="http://fonts.googleapis.com/css?family=Signika:300,400,600" rel="stylesheet" type="text/css" />
+
+<!-- Alt Stylesheet -->
+<link href="css/light-wood.css" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body class="home blog gecko layout-left-content">
+
+<div id="wrapper">
+
+	
+	<header id="header">
+	<a href="http://github.com/arkoman/NXTClass">
+<img alt="Fork me on GitHub" src="https://a248.e.akamai.net/assets.github.com/img/30f550e0d38ceb6ef5b81500c64d970b7fb0f028/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6f72616e67655f6666373630302e706e67" style="position: absolute; top: 40px; right: 0; border: 0;">
+</a>
+		<div class="col-full">
+	        
+			<h1><a href="{{ HOME_PATH }}">{{ site.title }}</a></h1>
+			{{ site.tagline }}
+		      		
+				<br>
+		<nav id="navigation" role="navigation">
+		  <ul id="main-nav" class="nav fl">
+		   <li><a class="brand" href="{{ HOME_PATH }}">Home</a>
+            {% assign pages_list = site.pages %} {% assign group = 'navigation' %} {% include JB/pages_list %} 
+          </ul><!-- /#nav -->
+    	        	    		
+		</nav><!-- /#navigation -->
+		
+				
+		</div><!-- /.col-full -->
+		
+	</header><!-- /#header -->
+	
+				
+		
+    <div id="content">
+    	<div class="col-full"> 
+    					{{ content }}
+		</div><!-- /.col-full -->
+    </div><!-- /#content -->
+	
+	<footer id="footer">
+	
+		<div class="col-full">
+
+			<div id="copyright" class="col-left">
+							<p>ArkoMan &copy; 2012. All Rights Reserved.</p>
+						</div>
+	
+			<div id="credit" class="col-right">
+			
+			Dare. Dream. Do			</div>
+			
+		</div>
+		
+	</footer><!-- /#footer  -->
+
+</div><!-- /#wrapper -->
+<!--[if lt IE 9]>
+<script src="http://arkoman.cu.cc/wp-content/themes/whitelight/includes/js/respond-IE.js"></script>
+<![endif]-->
+{% include JB/analytics %}
+</body>
+</html>

@@ -1,0 +1,11 @@
+---
+layout: page
+title: Posts
+footer: false
+---
+
+{% for post in site.posts reverse %}
+<article>
+  {% include archive_post.html %}
+</article>
+{% endfor %}
