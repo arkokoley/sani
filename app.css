@@ -241,12 +241,14 @@ body:before {/* thanks to Maleika (Kohoutec)*/
 .article-navigation .article-link {
   display: block;
   float: left;
-  height: 30px;
-  width: 30px;
+  height: 100px;
+  width: 100px;
+  text-align: center;
+  padding-top: 25px;
 
-  -moz-border-radius: 15px;
-  -webkit-border-radius: 15px;
-  border-radius: 15px;
+  -moz-border-radius: 50px;
+  -webkit-border-radius: 50px;
+  border-radius: 50px;
 
   background: rgba(0,0,0, 0.3);
   
@@ -297,7 +299,7 @@ body:before {/* thanks to Maleika (Kohoutec)*/
 
 .post-content {
   width: 800px;
-  margin: 0px auto;
+  margin: 20px auto;
   padding: 20px 0;
   font-family: 'OpenSans', sans-serif;
   font-weight: normal;
