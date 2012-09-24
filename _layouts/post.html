@@ -1,24 +1,20 @@
 ---
-layout: default
+single: true
 ---
+{% capture root_url %}{{ site.root | strip_slash }}{% endcapture %}
+{% include head.html %}
+<body {% if page.body_id %} id="{{ page.body_id }}" {% endif %} {% if page.sidebar == false %} class="no-sidebar" {% endif %} {% if page.sidebar == 'collapse' or site.sidebar == 'collapse' %} class="collapse-sidebar sidebar-footer" {% endif %}>
+  <nav role="navigation">{% include navigation.html %}</nav>
+  <div class="wrapper_single">
+    <div class="container">
+      <article class="span8 offset2" role="article">
+        {% include article.html %}
 
-
-<div class="article-navigation">
-  {% for item in site.categories.articles limit:40 offset:0 %}
-    <a class="article-link" href="{{site.url}}{{item.url}}" title="{{item.title}}">
-      {{item.title}}
-    </a>
-  {% endfor %}
-</div>
-
-<div class="intro">
-  <div class="title"><a href="{{page.url}}">{{page.title}}</a></div>
-  <div class="abstract">{{page.abstract}}</div>
-  <div class="meta"> Posted by <a href="http://twitter.com/{{page.author_twitter}}">{{page.author}}</a> on {{ page.date | date: "%B %d, %Y" }} </div>
-</div>
-
-<div class="article-wrapper">
-  <div class="help post-content">
-    {{ content }}
+      </article>
+        <div id="disqus_thread"></div>{% include disqus.html %}
+		</div>
   </div>
-</div>
+  {% include footer.html %}
+  {% include after_footer.html %}
+</body>
+</html>

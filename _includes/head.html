@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>{% if page.title %}{{ page.title }} - {% endif %}{{ site.title }}</title>
+  <meta name="author" content="{{ site.author }}">
+  <link rel="author" href="humans.txt">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  {% if index %}
+    {% capture description %}
+      {{ site.description }}
+    {% endcapture %}
+  {% else %}
+    {% capture description %}
+      {% if page.description %}
+        {{ page.description }}
+      {% elsif content | excerpt  %}
+        {{ content | excerpt }}
+      {% else %}
+        {{ content | raw_content }}
+      {% endif %}
+    {% endcapture %}
+  {% endif %}
+  <meta name="description" content="{{ description | strip_html | condense_spaces | truncate:150 }}">
+  {% if page.keywords %}<meta name="keywords" content="{{ page.keywords }}">{% endif %}
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  {% capture canonical %}{{ site.url }}{% if site.permalink contains '.html' %}{{ page.url }}{% else %}{{ page.url | remove:'index.html' }}{% endif %}{% endcapture %}
+  <link rel="canonical" href="{{ canonical }}">
+  <link href="{{ root_url }}/favicon.png" rel="icon">
+  <link href='http://fonts.googleapis.com/css?family=Cantarell' rel='stylesheet' type='text/css'>
+  <link href="{{ root_url }}/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="{{ site.subscribe_rss }}" rel="alternate" title="{{site.title}}" type="application/atom+xml">
+  <meta name="og:type" content="website" />
+  <meta name="og:site_name" content="{{ site.title }}" />
+  <meta name="og:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}" />
+  <meta name="og:description" content="{{ description | strip_html | condense_spaces | truncate:150 }}" />
+  <meta name="og:url" content="{{ site.url }}{{ page.url }}"/>
+  <meta name="url" content="{{ site.url }}{{ page.url }}">
+  {% if page.categories %}
+  <meta name="subject" content="{{ page.categories }}"/>
+  <meta name="category" content="{{ page.categories }}"/>
+  {% endif %}
+  <meta name="distribution" content="global">
+  {% include custom/head.html %}
+  {% include google_analytics.html %}
+</head>

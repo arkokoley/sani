@@ -1,0 +1,14 @@
+{% if post.author %}
+  {% assign author = post.author %}
+{% elsif page.author %}
+  {% assign author = page.author %}
+{% else %}
+  {% assign author = site.author %}
+{% endif %}
+{% if author %}
+  {% if site.googleplus_user %}
+    <span class="byline author vcard">by <a href="https://plus.google.com/{{ site.googleplus_user }}?rel=author"><span class="fn">{{ author }}</span></a></span>
+  {% else %}
+    <span class="byline author vcard">by <span class="fn">{{ author }}</span></span>
+  {% endif %}
+{% endif %}

@@ -1,0 +1,20 @@
+<div class="row">
+  <div class="span3">
+      {%include asides/github.html %}
+  </div>
+  <div class="span4">
+    <h2>twitter</h2>
+    <a href="https://twitter.com/{{site.twitter_user}}" class="twitter-follow-button" data-show-count="true" data-lang="en">Follow @{{site.twitter_user}}</a>
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    <div class="tweet">
+    </div>
+  </div>
+  <div class="span2">
+    <h2>Found on</h2>
+    <a href="https://github.com/{{site.github_user}}/" rel="tooltip" title="Github"><img class="social_icon" title="Github" alt="github icon" src="{{ root_url }}/images/glyphicons_381_github.png"></a>
+    <a href="http://twitter.com/{{site.twitter_user}}" rel="tooltip" title="Twitter"><img class="social_icon" title="Twitter" alt="Twitter icon" src="{{ root_url }}/images/glyphicons_391_twitter_t.png"></a>
+    <a href="https://plus.google.com/u/0/118012564616232882564" rel="tooltip" title="Google Plus"><img class="social_icon" title="Google Plus" alt="Google Plus icon" src="{{ root_url }}/images/glyphicons_386_google_plus.png"></a>
+        <h2>contact at</h2>
+    <a href="mailto:{{site.email}}">{{site.email}}</a>
+  </div>
+</div>
