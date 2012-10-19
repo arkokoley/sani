@@ -1,0 +1,15 @@
+rvm:
+  - "1.9.3"
+  - "1.9.2"
+  - jruby-19mode
+  - rbx-19mode
+  - jruby-18mode
+  - "1.8.7"
+
+before_install:
+  - sudo gem install bundler
+  - sudo bundle install
+
+notifications:
+  email:
+    - arkokoley@live.in
