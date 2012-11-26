@@ -2,14 +2,6 @@ require "rubygems"
 require "bundler/setup"
 require "stringex"
 
-## -- Rsync Deploy config -- ##
-# Be sure your public key is listed in your server's ~/.ssh/authorized_keys file
-ssh_user = "dudarevc@dudarev.com"
-document_root = "~/public_html/blog"
-ssh_port = "22"
-rsync_delete = false
-deploy_default = "rsync"
-
 # This will be configured for you when you run config_deploy
 deploy_branch = "gh-pages"
 
@@ -212,15 +204,6 @@ task :copydot, :source, :dest do |t, args|
   end
 end
 
-desc "Deploy website via rsync"
-task :rsync do
-  exclude = ""
-  if File.exists?('./rsync-exclude')
-    exclude = "--exclude-from '#{File.expand_path('./rsync-exclude')}'"
-  end
-  puts "## Deploying website via Rsync"
-  ok_failed system("rsync -avze 'ssh -p #{ssh_port}' #{exclude} #{"--delete" unless rsync_delete == false} #{public_dir}/ #{ssh_user}:#{document_root}")
-end
 
 desc "deploy public directory to github pages"
 multitask :push do
