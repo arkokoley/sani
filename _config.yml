@@ -18,7 +18,7 @@ exclude:
 - README.md
 
 prose:
-  rooturl: "_posts"
+  #rooturl: "_posts"
   metadata: 
     _posts/blog: |
       published: true
