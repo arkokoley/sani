@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Open source projects of {{site.author}}</title>
+        <meta name="description" content="All the open source projects of {{site.author}} in one place.">
+		 <style>
+/*
+* GitHub project listing repo
+*/
+
+html {
+    font: 14px/1.4 "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #333;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+}
+
+body {
+    max-width: 940px;
+    padding: 20px 10px;
+    margin: 0 auto;
+    background: #f5f5f5;
+}
+
+img {
+    border: 0;
+    -ms-interpolation-mode: bicubic;
+}
+
+/* Links
+========================================================================== */
+
+a {
+    color: #0084b4;
+    text-decoration: none;
+}
+
+a:hover,
+a:focus,
+a:active {
+    color: #005E80;
+    text-decoration: underline;
+}
+
+a:focus {
+    outline: thin dotted;
+}
+
+a:hover,
+a:active {
+    outline: 0;
+}
+
+/* Typography
+========================================================================== */
+
+h1,
+h2,
+h3 {
+    margin: 0 0 1em;
+}
+
+h1, .h1 {
+    margin: 0 0 0.25em;
+    font-size: 2.75em;
+}
+
+h2, .h2 {
+    font-size: 1.25em;
+}
+
+h3, .h3 {
+    font-size: 1.125em;
+    color: #777;
+}
+
+p {
+    margin: 0 0 1em;
+}
+
+/* Lists
+========================================================================== */
+
+ol,
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+
+/* =============================================================================
+Structure
+========================================================================== */
+
+.grid {
+    display: block;
+    padding: 0;
+    margin: 0 -10px;
+    /* remove intra-unit whitespace for all font families */
+    letter-spacing: -0.31em;
+    *letter-spacing: normal;
+    word-spacing: -0.43em;
+    /* protect against WebKit bug with optimizelegibility */
+    text-rendering: optimizespeed;
+}
+
+.unit-1-3 {
+    width: 300px;
+    display: inline-block;
+    margin: 0 10px 20px;
+    /* controls vertical positioning of units */
+    vertical-align: top;
+    /* reset defaults */
+    letter-spacing: normal;
+    word-spacing: normal;
+    text-rendering: auto;
+    *display: inline;
+    *zoom: 1;
+}
+
+/* Box
+========================================================================== */
+
+.box {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    min-height: 150px;
+    padding: 15px 15px 45px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    text-decoration: none;
+    background: #fff;
+}
+
+a.box:hover,
+a.box:focus,
+a.box:active {
+    padding: 12px 12px 42px;
+    border-width: 4px;
+    border-color: #005E80;
+    text-decoration: none;
+}
+
+/* Header
+========================================================================== */
+
+.site-header {
+    float:left;
+    text-align: center;
+}
+
+.site-logo img {
+    border: 1px solid #222;
+}
+
+.site-header .box {
+    min-height: 412px;
+    padding-bottom: 15px;
+}
+
+.stats {
+    margin: 0 0 2em;
+    font-size: 1.125em;
+}
+
+.twitter-follow-button {
+    margin-top: 25px;
+}
+
+/* Content
+========================================================================== */
+
+.repo__name {
+    margin: 0 0 0.1em;
+    font-size: 1.5em;
+}
+
+.repo__info {
+    display: block;
+    margin: 0 0 1.25em;
+    font-size: 12px;
+    font-weight: bold;
+    color: #999;
+}
+
+.repo__desc {
+    color: #666;
+}
+
+.repo__updated {
+    position: absolute;
+    right: 15px;
+    bottom: 15px;
+    left: 15px;
+    margin: 0;
+    font-size: 13px;
+    font-style: italic;
+    color: #bbb;
+}
+
+
+/* =============================================================================
+Small screen adjustments
+========================================================================== */
+
+@media (max-width:960px) {
+
+    body {
+        max-width: 620px;
+    }
+
+}
+
+@media (max-width:640px) {
+
+    body {
+        max-width: 300px;
+    }
+
+}
+		 </style>
+
+    </head>
+    <body>
+        <div class="grid">
+            <div class="unit-1-3 site-header">
+                <div class="box"
+                    </div>
+                    <h2>GitHub repositories owned by <a href="{{site.url}}">{{site.author}}</a></h2>
+                    <p class="stats">
+                        <a href="https://github.com/{{site.github_user}}/repositories"><b id="num-repos">View</b> public repos</a>
+                        <br>
+                        <a href="https://gist.github.com/{{site.github_user}}"><b id="num-gists">View</b> public gists</a>
+                    </p>
+                    <h3>Recently updated</h3>
+                    <ol id="updated-repos"></ol>
+                    <a class="twitter-follow-button"
+                        href="https://twitter.com/{{site.twitter_user}}"
+                        data-show-count="false"
+                        data-lang="en"
+                        data-count="none">Follow @{{site.twitter_user}}</a>
+                </div>
+            </div>
+
+            <div class="site-content" id="repos"></div>
+        </div>
+
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+        <script type="text/javascript">(
+function ($, undefined) {
+
+    var userName = '{{site.github_user}}';
+
+    // Put custom repo URL's in this object, keyed by repo name.
+    var repoUrls = {};
+
+    // Put custom repo descriptions in this object, keyed by repo name.
+    var repoDescriptions = {};
+
+    // Return the repo url
+    function getRepoUrl(repo) {
+        return repoUrls[repo.name] || repo.html_url;
+    }
+
+    // Return the repo description
+    function getRepoDesc(repo) {
+        return repoDescriptions[repo.name] || repo.description;
+    }
+
+    // Return the repo language
+    function getRepoLang(repo) {
+        if (repo.language) {
+            return repo.language;
+        }
+        else {
+            return 'HTML/CSS';
+        }
+    }
+
+    // Display a repo's overview (for recent updates section)
+    function showRepoOverview(repo) {
+        var item;
+        item = '<li>';
+        item += '<span class="name"><a href="' + repo.html_url + '">' + repo.name + '</a></span>';
+        item += ' &middot; <span class="time"><a href="' + repo.html_url + '/commits">' + prettyDate(repo.pushed_at) + '</a></span>';
+        item += '</li>';
+
+        $(item).appendTo("#updated-repos");
+    }
+
+    // Create an entry for the repo in the grid of org repos
+    function showRepo(repo) {
+        var $item = $('<div class="unit-1-3 repo" />');
+        var $link = $('<a class="box" href="' + getRepoUrl(repo) + '" />');
+
+        $link.append('<h2 class="repo__name">' + repo.name + '</h2>');
+        $link.append('<p class="repo__info">' + repo.watchers + ' watchers &middot; ' + getRepoLang(repo) + '</p>');
+        $link.append('<p class="repo__desc">' + getRepoDesc(repo) + '</p>');
+        $link.append('<p class="repo__updated">Last updated: ' + prettyDate(repo.pushed_at) + '</p>');
+
+        $link.appendTo($item);
+        $item.appendTo('#repos');
+    }
+
+    $.getJSON('https://api.github.com/users/' + userName + '/gists?type=public&callback=?', function (result) {
+        var gists = result.data;
+        $(function () {
+            $('#num-gists').text(gists.length);
+        });
+    });
+
+    $.getJSON('https://api.github.com/users/' + userName + '/repos?type=public&callback=?', function (result) {
+        var repos = result.data;
+        $(function () {
+            $('#num-repos').text(repos.length);
+
+            // Convert pushed_at to Date.
+            $.each(repos, function (i, repo) {
+                repo.pushed_at = new Date(repo.pushed_at);
+
+                var weekHalfLife = 1.146 * Math.pow(10, -9);
+
+                var pushDelta = (new Date) - Date.parse(repo.pushed_at);
+                var createdDelta = (new Date) - Date.parse(repo.created_at);
+
+                var weightForPush = 1;
+                var weightForWatchers = 1.314 * Math.pow(10, 7);
+
+                repo.hotness = weightForPush * Math.pow(Math.E, -1 * weekHalfLife * pushDelta);
+                repo.hotness += weightForWatchers * repo.watchers / createdDelta;
+            });
+
+            // Sort by hotness.
+            repos.sort(function (a, b) {
+                if (a.hotness < b.hotness) return 1;
+                if (b.hotness < a.hotness) return -1;
+                return 0;
+            });
+
+            $.each(repos, function (i, repo) {
+                showRepo(repo);
+            });
+
+            // Sort by most-recently pushed to.
+            repos.sort(function (a, b) {
+                if (a.pushed_at < b.pushed_at) return 1;
+                if (b.pushed_at < a.pushed_at) return -1;
+                return 0;
+            });
+
+            $.each(repos.slice(0, 3), function (i, repo) {
+                showRepoOverview(repo);
+            });
+        });
+    });
+
+    // Relative times
+    function prettyDate(date) {
+        var date, seconds, formats, i = 0, f;
+        date = new Date(date);
+        seconds = (new Date - date) / 1000;
+        formats = [
+            [60, 'seconds', 1],
+            [120, '1 minute ago'],
+            [3600, 'minutes', 60],
+            [7200, '1 hour ago'],
+            [86400, 'hours', 3600],
+            [172800, 'Yesterday'],
+            [604800, 'days', 86400],
+            [1209600, '1 week ago'],
+            [2678400, 'weeks', 604800]
+        ];
+
+        while (f = formats[i ++]) {
+            if (seconds < f[0]) {
+                return f[2] ? Math.floor(seconds / f[2]) + ' ' + f[1] + ' ago' : f[1];
+            }
+        }
+        return 'A while ago';
+    }
+
+})(jQuery);
+
+// External 3rd party scripts
+(function(doc, script) {
+    var js,
+        fjs = doc.getElementsByTagName(script)[0],
+        add = function(url, id) {
+            if (doc.getElementById(id)) {return;}
+            js = doc.createElement(script);
+            js.src = url;
+            id && (js.id = id);
+            fjs.parentNode.insertBefore(js, fjs);
+        };
+
+    // Twitter SDK
+    add('http://platform.twitter.com/widgets.js', 'twitter-wjs');
+}(document, 'script')); </script>
+    </body>
+</html>
