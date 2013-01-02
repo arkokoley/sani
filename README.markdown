@@ -16,7 +16,7 @@ Ships with great plug-ins some original and others from the Jekyll community —
 
 # Documentation
 
-Check out the [Wiki](./wiki) I'm trying my best to complete the documentation. Till then refer to this post: http://arkokoley.github.com/blog/2012/11/26/presenting-sani/
+Check out the [Wiki](/arkokoley/sani/wiki) I'm trying my best to complete the documentation. Till then refer to this post: http://arkokoley.github.com/blog/2012/11/26/presenting-sani/
 
 # Contributing
 
