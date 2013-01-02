@@ -8,8 +8,8 @@ deploy_branch = "gh-pages"
 ## -- Misc Configs -- ##
 
 public_dir = "_site/" # compiled site directory
-source_dir = "" # source file directory
-blog_index_dir = '/' # directory for your blog's index page (if you put your index in source/blog/index.html, set this to 'source/blog')
+source_dir = "." # source file directory
+blog_index_dir = '.' # directory for your blog's index page (if you put your index in source/blog/index.html, set this to 'source/blog')
 deploy_dir = "__site/" # deploy directory (for Github pages deployment)
 stash_dir = "_stash" # directory to stash posts for speedy generation
 posts_dir = "_posts" # directory for blog files
@@ -34,7 +34,7 @@ task :watch do
   raise "### You haven't set anything up yet. First edit the _config.yml file." unless File.directory?(source_dir)
   puts "Starting to watch source with Jekyll and Compass."
   system "compass compile --css-dir #{source_dir}/stylesheets" unless File.exist?("#{source_dir}/stylesheets/screen.css")
-  jekyllPid = Process.spawn({"OCTOPRESS_ENV"=>"preview"}, "jekyll --auto")
+  jekyllPid = Process.spawn({"Sani_ENV"=>"preview"}, "jekyll --auto")
   compassPid = Process.spawn("compass watch")
 
   trap("INT") {
@@ -50,7 +50,7 @@ task :preview do
   raise "### You haven't set anything up yet. First edit the _config.yml file." unless File.directory?(source_dir)
   puts "Starting to watch source with Jekyll and Compass. Starting Rack on port #{server_port}"
   system "compass compile --css-dir #{source_dir}/stylesheets" unless File.exist?("#{source_dir}/stylesheets/screen.css")
-  jekyllPid = Process.spawn({"OCTOPRESS_ENV"=>"preview"}, "jekyll --auto")
+  jekyllPid = Process.spawn({"Sani_ENV"=>"preview"}, "jekyll --auto")
   compassPid = Process.spawn("compass watch")
   rackupPid = Process.spawn("rackup --port #{server_port}")
 
@@ -88,7 +88,7 @@ end
 # usage rake npage[my-new-page] or rake npage[my-new-page.html] or rake npage (defaults to "new-page.markdown")
 desc "Create a new page in #{source_dir}/(filename)/index.#{new_page_ext}"
 task :npage, :filename do |t, args|
-  raise "### You haven't set anything up yet. First run `rake install` to set up an Octopress theme." unless File.directory?(source_dir)
+  raise "### You haven't set anything up yet. First run `rake install` to set up an Sani theme." unless File.directory?(source_dir)
   args.with_defaults(:filename => 'new-page')
   page_dir = [source_dir]
   if args.filename.downcase =~ /(^.+\/)?(.+)/
@@ -142,20 +142,6 @@ end
 desc "Clean out caches: .pygments-cache, .gist-cache, .sass-cache"
 task :clean do
   rm_rf [".pygments-cache/**", ".gist-cache/**", ".sass-cache/**", "source/stylesheets/screen.css"]
-end
-
-desc "Move sass to sass.old, install sass theme updates, replace sass/custom with sass.old/custom"
-task :update_style, :theme do |t, args|
-  theme = args.theme || 'classic'
-  if File.directory?("sass.old")
-    puts "removed existing sass.old directory"
-    rm_r "sass.old", :secure=>true
-  end
-  mv "sass", "sass.old"
-  puts "## Moved styles into sass.old/"
-  cp_r "#{themes_dir}/"+theme+"/sass/", "sass"
-  cp_r "sass.old/custom/.", "sass/custom"
-  puts "## Updated Sass ##"
 end
 
 desc "Move source to source.old, install source theme updates, replace source/_includes/navigation.html with source.old's navigation"
@@ -269,9 +255,9 @@ task :setup_github_pages, :repo do |t, args|
   user = repo_url.match(/:([^\/]+)/)[1]
   branch = (repo_url.match(/\/[\w-]+.github.com/).nil?) ? 'gh-pages' : 'master'
   project = (branch == 'gh-pages') ? repo_url.match(/\/([^\.]+)/)[1] : ''
-  unless `git remote -v`.match(/origin.+?octopress.git/).nil?
-    # If octopress is still the origin remote (from cloning) rename it to octopress
-    system "git remote rename origin octopress"
+  unless `git remote -v`.match(/origin.+?Sani.git/).nil?
+    # If Sani is still the origin remote (from cloning) rename it to Sani
+    system "git remote rename origin sani"
     if branch == 'master'
       # If this is a user/organization pages repository, add the correct origin remote
       # and checkout the source branch for committing changes to the blog source.
@@ -298,9 +284,9 @@ task :setup_github_pages, :repo do |t, args|
   mkdir deploy_dir
   cd "#{deploy_dir}" do
     system "git init"
-    system "echo 'My Octopress Page is coming soon &hellip;' > index.html"
+    system "echo 'My Sani Page is coming soon &hellip;' > index.html"
     system "git add ."
-    system "git commit -m \"Octopress init\""
+    system "git commit -m \"Sani init\""
     system "git branch -m gh-pages" unless branch == 'master'
     system "git remote add origin #{repo_url}"
     rakefile = IO.read(__FILE__)
@@ -336,7 +322,7 @@ def ask(message, valid_options)
 end
 
 desc "list tasks"
-task :list do
   puts "Tasks: #{(Rake::Task.tasks - [Rake::Task[:list]]).join(', ')}"
+task :list do
   puts "(type rake -T for more detail)\n\n"
 end
