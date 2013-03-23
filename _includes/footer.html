@@ -1,10 +1,13 @@
-<div id="footer-widgets">
-  <div class="container">
-    {% include footer_widgets.html%}
-  </div>
-</div>
-<footer class="footer">
-  <div class="container">
+<div class="sixteen columns">
     {% include custom/footer.html %}
-  </div>
-</footer>
+<hr/>
+<span class="copyright">
+  <a href="{{ root_url }}/">{{ site.title }}</a>
+  - Copyright &copy; {{ site.time | date: "%Y" }} - {{ site.author }}
+</span>
+<span class="colophon">
+  Powered by <a href="http://arkokoley.github.com/sani">Sani</a>.
+</span>
+<br><br>
+</div>
+</div>

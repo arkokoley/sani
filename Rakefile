@@ -2,15 +2,22 @@ require "rubygems"
 require "bundler/setup"
 require "stringex"
 
+## -- Rsync Deploy config -- ##
+# Be sure your public key is listed in your server's ~/.ssh/authorized_keys file
+ssh_user = "dudarevc@dudarev.com"
+document_root = "~/public_html/blog"
+ssh_port = "22"
+rsync_delete = false
+deploy_default = "rsync"
+
 # This will be configured for you when you run config_deploy
 deploy_branch = "gh-pages"
 
 ## -- Misc Configs -- ##
 
-public_dir = "_site/" # compiled site directory
 source_dir = "." # source file directory
 blog_index_dir = '.' # directory for your blog's index page (if you put your index in source/blog/index.html, set this to 'source/blog')
-deploy_dir = "__site/" # deploy directory (for Github pages deployment)
+deploy_dir = "_site" # deploy directory (for Github pages deployment)
 stash_dir = "_stash" # directory to stash posts for speedy generation
 posts_dir = "_posts" # directory for blog files
 new_post_ext = "markdown" # default new post file extension when using the new_post task
@@ -73,7 +80,7 @@ task :npost, :title do |t, args|
   if File.exist?(filename)
     abort("rake aborted!") if ask("#{filename} already exists. Do you want to overwrite?", ['y', 'n']) == 'n'
   end
-  puts "Creating new post: #{Time.now.strftime('%Y-%m-%d')-filename}"
+  puts "Creating new post: #{Time.now.strftime('%Y-%m-%d')}-#{title.to_url}"
   open(filename, 'w') do |post|
     post.puts "---"
     post.puts "layout: post"
@@ -88,7 +95,6 @@ end
 # usage rake npage[my-new-page] or rake npage[my-new-page.html] or rake npage (defaults to "new-page.markdown")
 desc "Create a new page in #{source_dir}/(filename)/index.#{new_page_ext}"
 task :npage, :filename do |t, args|
-  raise "### You haven't set anything up yet. First run `rake install` to set up an Sani theme." unless File.directory?(source_dir)
   args.with_defaults(:filename => 'new-page')
   page_dir = [source_dir]
   if args.filename.downcase =~ /(^.+\/)?(.+)/
@@ -144,24 +150,6 @@ task :clean do
   rm_rf [".pygments-cache/**", ".gist-cache/**", ".sass-cache/**", "source/stylesheets/screen.css"]
 end
 
-desc "Move source to source.old, install source theme updates, replace source/_includes/navigation.html with source.old's navigation"
-task :update_source, :theme do |t, args|
-  theme = args.theme || 'classic'
-  if File.directory?("#{source_dir}.old")
-    puts "## Removed existing #{source_dir}.old directory"
-    rm_r "#{source_dir}.old", :secure=>true
-  end
-  mkdir "#{source_dir}.old"
-  cp_r "#{source_dir}/.", "#{source_dir}.old"
-  puts "## Copied #{source_dir} into #{source_dir}.old/"
-  cp_r "#{themes_dir}/"+theme+"/source/.", source_dir, :remove_destination=>true
-  cp_r "#{source_dir}.old/_includes/custom/.", "#{source_dir}/_includes/custom/", :remove_destination=>true
-  cp "#{source_dir}.old/favicon.png", source_dir
-  mv "#{source_dir}/index.html", "#{blog_index_dir}", :force=>true if blog_index_dir != source_dir
-  cp "#{source_dir}.old/index.html", source_dir if blog_index_dir != source_dir && File.exists?("#{source_dir}.old/index.html")
-  puts "## Updated #{source_dir} ##"
-end
-
 ##############
 # Deploying #
 ##############
@@ -175,7 +163,7 @@ task :deploy do
     Rake::Task[:generate].execute
   end
 
-  Rake::Task[:copydot].invoke(source_dir, public_dir)
+  Rake::Task[:copydot].invoke(source_dir, deploy_dir)
   Rake::Task["#{deploy_default}"].execute
 end
 
@@ -190,24 +178,20 @@ task :copydot, :source, :dest do |t, args|
   end
 end
 
-
 desc "deploy public directory to github pages"
 multitask :push do
   puts "## Deploying branch to Github Pages "
   (Dir["#{deploy_dir}/*"]).each { |f| rm_rf(f) }
-  Rake::Task[:copydot].invoke(public_dir, deploy_dir)
-  puts "\n## copying #{public_dir} to #{deploy_dir}"
-  cp_r "#{public_dir}/.", deploy_dir
-  cd "#{deploy_dir}" do
+  Rake::Task
     system "git add ."
     system "git add -u"
     puts "\n## Commiting: Site updated at #{Time.now.utc}"
     message = "Site updated at #{Time.now.utc}"
     system "git commit -m \"#{message}\""
     puts "\n## Pushing generated #{deploy_dir} website"
+    system "git pull origin #{deploy_branch}"
     system "git push origin #{deploy_branch} --force"
     puts "\n## Github Pages deploy complete"
-  end
 end
 
 desc "Update configurations to support publishing to root or sub directory"
@@ -220,7 +204,7 @@ task :set_root_dir, :dir do |t, args|
       dir = "/" + args.dir.sub(/(\/*)(.+)/, "\\2").sub(/\/$/, '');
     end
     rakefile = IO.read(__FILE__)
-    rakefile.sub!(/public_dir(\s*)=(\s*)(["'])[\w\-\/]*["']/, "public_dir\\1=\\2\\3public#{dir}\\3")
+    rakefile.sub!(/deploy_dir(\s*)=(\s*)(["'])[\w\-\/]*["']/, "deploy_dir\\1=\\2\\3public#{dir}\\3")
     File.open(__FILE__, 'w') do |f|
       f.write rakefile
     end
@@ -239,14 +223,14 @@ task :set_root_dir, :dir do |t, args|
     File.open('_config.yml', 'w') do |f|
       f.write jekyll_config
     end
-    rm_rf public_dir
-    mkdir_p "#{public_dir}#{dir}"
+    rm_rf deploy_dir
+    mkdir_p "#{deploy_dir}#{dir}"
     puts "## Site's root directory is now '/#{dir.sub(/^\//, '')}' ##"
   end
 end
 
 desc "Set up _deploy folder and deploy branch for Github Pages deployment"
-task :setup_github_pages, :repo do |t, args|
+task :setup, :repo do |t, args|
   if args.repo
     repo_url = args.repo
   else
@@ -257,7 +241,7 @@ task :setup_github_pages, :repo do |t, args|
   project = (branch == 'gh-pages') ? repo_url.match(/\/([^\.]+)/)[1] : ''
   unless `git remote -v`.match(/origin.+?Sani.git/).nil?
     # If Sani is still the origin remote (from cloning) rename it to Sani
-    system "git remote rename origin sani"
+    system "git remote rename origin Sani"
     if branch == 'master'
       # If this is a user/organization pages repository, add the correct origin remote
       # and checkout the source branch for committing changes to the blog source.
@@ -268,7 +252,7 @@ task :setup_github_pages, :repo do |t, args|
       system "git branch -m master source"
       puts "Master branch renamed to 'source' for committing your blog source files"
     else
-      unless !public_dir.match("#{project}").nil?
+      unless !deploy_dir.match("#{project}").nil?
         system "rake set_root_dir[#{project}]"
       end
     end
@@ -280,6 +264,7 @@ task :setup_github_pages, :repo do |t, args|
   File.open('_config.yml', 'w') do |f|
     f.write jekyll_config
   end
+  rm_rf deploy_dir
   rm_rf deploy_dir
   mkdir deploy_dir
   cd "#{deploy_dir}" do
@@ -322,7 +307,7 @@ def ask(message, valid_options)
 end
 
 desc "list tasks"
-  puts "Tasks: #{(Rake::Task.tasks - [Rake::Task[:list]]).join(', ')}"
 task :list do
+  puts "Tasks: #{(Rake::Task.tasks - [Rake::Task[:list]]).join(', ')}"
   puts "(type rake -T for more detail)\n\n"
 end

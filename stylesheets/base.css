@@ -46,7 +46,10 @@
 	table {
 		border-collapse: collapse;
 		border-spacing: 0; }
-
+	nav {
+    position: fixed;
+    width: 160px;
+	}
 
 /* #Basic Styles
 ================================================== */
@@ -227,7 +230,7 @@
 		font: 13px "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
 		color: #777;
 		margin: 0;
-		width: 210px;
+		width: 150px;
 		max-width: 100%;
 		display: block;
 		margin-bottom: 20px;
