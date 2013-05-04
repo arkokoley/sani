@@ -1,6 +1,5 @@
 require "rubygems"
 require "bundler/setup"
-require "stringex"
 
 ## -- Rsync Deploy config -- ##
 # Be sure your public key is listed in your server's ~/.ssh/authorized_keys file
@@ -33,7 +32,7 @@ task :generate do
   raise "### You haven't set anything up yet. First edit the _config.yml file." unless File.directory?(source_dir)
   puts "## Generating Site with Jekyll"
   system "compass compile --css-dir #{source_dir}/stylesheets"
-  system "jekyll"
+  system "jekyll --no-server"
 end
 
 desc "Watch the site and regenerate when it changes"

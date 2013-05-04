@@ -10,8 +10,8 @@ simple_search: http://google.com/search
 description:
 sidebar:
 
-auto: true
-server: true
+auto: false
+server: false
 permalink: none
 exclude:
 - .gitignore
