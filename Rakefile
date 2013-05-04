@@ -1,6 +1,5 @@
 require "rubygems"
 require "bundler/setup"
-require "stringex"
 
 ## -- Rsync Deploy config -- ##
 # Be sure your public key is listed in your server's ~/.ssh/authorized_keys file
