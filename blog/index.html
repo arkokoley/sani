@@ -3,9 +3,10 @@ layout: page
 title: Posts
 footer: false
 ---
-
-{% for post in site.posts reverse %}
 <article>
+{% for post in site.posts reverse %}
+
   {% include archive_post.html %}
-</article>
+
 {% endfor %}
+</article>

@@ -2,9 +2,28 @@
 {% assign index = true %}
 {% include head.html %}
 <body {% if page.body_id %} id="{{ page.body_id }}" {% endif %} {% if page.sidebar == false %} class="no-sidebar" {% endif %} {% if page.sidebar == 'collapse' or site.sidebar == 'collapse' %} class="collapse-sidebar sidebar-footer" {% endif %}>
+  <div class="container">
   {% include navigation.html %}
-  {{ content | expand_urls: root_url }}
+  <div class="twelve columns offset-by-four content" role="div">
+        {% if page.title %}
+        <header>
+          <h2 class="entry-title">{% if site.titlecase %}{{ page.title | titlecase }}{% else %}{{ page.title }}{% endif %}</h2>
+          {% if page.date %}<p class="meta">{% include post/date.html %}{{ time }}</p>{% endif %}
+        </header>
+        {% endif %}
+        {{ content }}
+        {% unless page.footer == false %}
+          <footer>
+            {% if page.date or page.author %}<p class="meta">
+              {% if page.author %}{% include post/author.html %}{% endif %}
+              {% include post/date.html %}{% if updated %}{{ updated }}{% else %}{{ time }}{% endif %}
+              {% if page.categories %}{% include post/categories.html %}{% endif %}
+            </p>{% endif %}
+          </footer>
+        {% endunless %}
+    </div>
   {% include footer.html %}
   {% include after_footer.html %}
+</div>
 </body>
 </html>
