@@ -43,3 +43,6 @@ THE SOFTWARE IS PROVIDED ‘AS IS’, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 # Want to be awesome?
 
 Proudly display the 'Powered by Sani' credit in the footer. Add your site to the Wiki and watch the community grow.
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/arkokoley/sani/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
